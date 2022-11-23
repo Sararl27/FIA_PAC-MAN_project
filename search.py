@@ -79,19 +79,20 @@ def breadthFirstSearch(problem: SearchProblem): # TODO remufe : SearchProblem
     "*** YOUR CODE HERE ***"
     node = Node(problem.getStartState())
     if problem.isGoalState(node.state):
-        return node.action
-    queue = [node]
+        return [node.action]
+    queue = util.Queue()
+    queue.push(node)
     visited = []
 
-    while queue:
-        node = queue.pop(0)
+    while not queue.isEmpty():
+        node = queue.pop()
         visited.append(node.state)
 
         for child in node.extend(problem):
-            if not child.state in visited and not child in queue:
+            if not child.state in visited and not child in queue.list:
                 if problem.isGoalState(child.state):
-                    return child.action
-                queue.append(child)
+                    return [n.action for n in child.path()[1:]]
+                queue.push(child)
 
     util.raiseNotDefined()
 
