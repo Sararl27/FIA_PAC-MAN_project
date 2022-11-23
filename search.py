@@ -74,32 +74,27 @@ def tinyMazeSearch(problem):
     w = Directions.WEST
     return  [s, s, w, s, w, w, s, w]
 
-def breadthFirstSearch(problem: SearchProblem): # TODO remufe : SearchProblem
-    """Search the shallowest nodes in the search tree first."""
+
+def uniformCostSearch(problem: SearchProblem):
+    """Search the node of least total cost first."""
     "*** YOUR CODE HERE ***"
     node = Node(problem.getStartState())
-    if problem.isGoalState(node.state):
-        return [node.action]
-    queue = util.Queue()
-    queue.push(node)
+    queue = util.PriorityQueue()
+    queue.push(node, node.heuristic_value)
     visited = []
 
     while not queue.isEmpty():
         node = queue.pop()
+        if problem.isGoalState(node.state):
+            return [n.action for n in node.path()[1:]]
         visited.append(node.state)
 
         for child in node.extend(problem):
-            if not child.state in visited and not child in queue.list:
-                if problem.isGoalState(child.state):
-                    return [n.action for n in child.path()[1:]]
-                queue.push(child)
+            if not child.state in visited:
+                 queue.update(child, child.heuristic_value) # Check if exist or not exist in the queue,
+                                                            # if exist, check if has a lower heuristic value then replace
 
-    util.raiseNotDefined()
-
-def uniformCostSearch(problem):
-    """Search the node of least total cost first."""
-    "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+    return None
 
 def nullHeuristic(state, problem=None):
     """
@@ -115,6 +110,5 @@ def aStarSearch(problem, heuristic=nullHeuristic):
 
 
 # Abbreviations
-bfs = breadthFirstSearch
 astar = aStarSearch
 ucs = uniformCostSearch
