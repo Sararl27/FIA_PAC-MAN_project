@@ -18,6 +18,8 @@ Pacman agents (in searchAgents.py).
 """
 
 import util
+from node import Node
+
 
 class SearchProblem:
     """
@@ -72,9 +74,25 @@ def tinyMazeSearch(problem):
     w = Directions.WEST
     return  [s, s, w, s, w, w, s, w]
 
-def breadthFirstSearch(problem):
+def breadthFirstSearch(problem: SearchProblem): # TODO remufe : SearchProblem
     """Search the shallowest nodes in the search tree first."""
     "*** YOUR CODE HERE ***"
+    node = Node(problem.getStartState())
+    if problem.isGoalState(node.state):
+        return node.action
+    queue = [node]
+    visited = []
+
+    while queue:
+        node = queue.pop(0)
+        visited.append(node.state)
+
+        for child in node.extend(problem):
+            if not child.state in visited and not child in queue:
+                if problem.isGoalState(child.state):
+                    return child.action
+                queue.append(child)
+
     util.raiseNotDefined()
 
 def uniformCostSearch(problem):
