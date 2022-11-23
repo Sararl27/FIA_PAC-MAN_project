@@ -648,7 +648,7 @@ def runGames( layout, pacman, ghosts, display, numGames, record, numTraining = 0
 
         if record:
             import time, cPickle
-            fname = ('recorded-game-%d' % (i + 1)) +  '-'.join([str(t) for t in time.localtime()[1:6]])
+            fname = ('recorded-game-%d' % (i + 1)) + '-'.join([str(t) for t in time.localtime()[1:6]])
             f = open(fname, 'w')
             components = {'layout': layout, 'actions': game.moveHistory}
             cPickle.dump(components, f)
