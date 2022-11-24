@@ -72,12 +72,11 @@ def tinyMazeSearch(problem):
     from game import Directions
     s = Directions.SOUTH
     w = Directions.WEST
-    return  [s, s, w, s, w, w, s, w]
+    return [s, s, w, s, w, w, s, w]
 
 
 def uniformCostSearch(problem: SearchProblem):
     """Search the node of least total cost first."""
-    "*** YOUR CODE HERE ***"
     node = Node(problem.getStartState())
     queue = util.PriorityQueue()
     queue.push(node, node.heuristic_value)
@@ -105,7 +104,6 @@ def nullHeuristic(state, problem=None):
 
 def aStarSearch(problem, heuristic=nullHeuristic):
     """Search the node that has the lowest combined cost and heuristic first."""
-    "*** YOUR CODE HERE ***"
     node = Node(problem.getStartState())
     queue = util.PriorityQueueWithFunction(lambda n: n.heuristic_value + heuristic(n.state, problem))
     queue.push(node)
