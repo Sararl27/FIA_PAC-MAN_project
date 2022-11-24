@@ -66,14 +66,14 @@ class SearchAgent(Agent):
     location (1,1)
 
     Options for fn include:
-      depthFirstSearch or dfs (removed)
+      depthFirstSearch or dfs
       breadthFirstSearch or bfs
 
 
     Note: You should NOT change any code in SearchAgent
     """
 
-    def __init__(self, fn='uniformCostSearch', prob='PositionSearchProblem', heuristic='nullHeuristic'):
+    def __init__(self, fn='depthFirstSearch', prob='PositionSearchProblem', heuristic='nullHeuristic'):
         # Warning: some advanced Python magic is employed below to find the right functions and problems
 
         # Get the search function from the name and heuristic

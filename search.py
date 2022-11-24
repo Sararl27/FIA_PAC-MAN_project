@@ -74,38 +74,47 @@ def tinyMazeSearch(problem):
     w = Directions.WEST
     return [s, s, w, s, w, w, s, w]
 
-
-def uniformCostSearch(problem: SearchProblem):
-    """Search the node of least total cost first."""
+def DFS_BFS(problem, queue):
     node = Node(problem.getStartState())
-    queue = util.PriorityQueue()
-    queue.push(node, node.heuristic_value)
+    if problem.isGoalState(node.state):
+        return [node.action]
+
+    queue.push(node)
     visited = []
 
     while not queue.isEmpty():
         node = queue.pop()
-        if problem.isGoalState(node.state):
-            return [n.action for n in node.path()[1:]]
         visited.append(node.state)
 
         for child in node.extend(problem):
-            if not child.state in visited:
-                 queue.update(child, child.heuristic_value) # Check if exist or not exist in the queue,
-                                                            # if exist, check if has a lower heuristic value then replace
-
+            if not child.state in visited and not child in queue.list:
+                if problem.isGoalState(child.state):
+                    return [n.action for n in child.path()[1:]]
+                queue.push(child)
     return None
 
-def nullHeuristic(state, problem=None):
+def depthFirstSearch(problem):
     """
-    A heuristic function estimates the cost from the current state to the nearest
-    goal in the provided SearchProblem.  This heuristic is trivial.
-    """
-    return 0
+    Search the deepest nodes in the search tree first.
 
-def aStarSearch(problem, heuristic=nullHeuristic):
-    """Search the node that has the lowest combined cost and heuristic first."""
+    Your search algorithm needs to return a list of actions that reaches the
+    goal. Make sure to implement a graph search algorithm.
+
+    To get started, you might want to try some of these simple commands to
+    understand the search problem that is being passed in:
+
+    print "Start:", problem.getStartState()
+    print "Is the start a goal?", problem.isGoalState(problem.getStartState())
+    print "Start's successors:", problem.getSuccessors(problem.getStartState())
+    """
+    return DFS_BFS(problem, util.Stack())
+
+def breadthFirstSearch(problem):
+    """Search the shallowest nodes in the search tree first."""
+    return DFS_BFS(problem, util.Queue())
+
+def UCS_AStar(problem, queue):
     node = Node(problem.getStartState())
-    queue = util.PriorityQueueWithFunction(lambda n: n.heuristic_value + heuristic(n.state, problem))
     queue.push(node)
     visited = []
 
@@ -119,8 +128,26 @@ def aStarSearch(problem, heuristic=nullHeuristic):
             if not child.state in visited:
                 queue.update(child)  # Check if exist or not exist in the queue,
                 # if exist, check if has a lower heuristic value then replace
+    return None
 
+
+def uniformCostSearch(problem: SearchProblem):
+    """Search the node of least total cost first."""
+    return UCS_AStar(problem, util.PriorityQueueWithFunction(lambda node: node.heuristic_value))
+
+def nullHeuristic(state, problem=None):
+    """
+    A heuristic function estimates the cost from the current state to the nearest
+    goal in the provided SearchProblem.  This heuristic is trivial.
+    """
+    return 0
+
+def aStarSearch(problem, heuristic=nullHeuristic):
+    """Search the node that has the lowest combined cost and heuristic first."""
+    return UCS_AStar(problem, util.PriorityQueueWithFunction(lambda node: node.heuristic_value + heuristic(node.state, problem)))
 
 # Abbreviations
+bfs = breadthFirstSearch
+dfs = depthFirstSearch
 astar = aStarSearch
 ucs = uniformCostSearch
