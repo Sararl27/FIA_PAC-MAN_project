@@ -24,3 +24,9 @@ class Node:
             node = node.parent
         print(list_n.list[0].action)
         return list_n.list
+
+    def inList(self, queue):
+        for n in queue:
+            if self.state == n.state:
+                return True
+        return False

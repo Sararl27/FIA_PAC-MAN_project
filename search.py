@@ -74,24 +74,23 @@ def tinyMazeSearch(problem):
     w = Directions.WEST
     return [s, s, w, s, w, w, s, w]
 
-def DFS_BFS(problem, queue):
-    node = Node(problem.getStartState())
-    if problem.isGoalState(node.state):
-        return [node.action]
 
-    queue.push(node)
+def DFS_BFS(problem, mutable, queue):
+    queue.push(Node(problem.getStartState()))
     visited = []
 
     while not queue.isEmpty():
         node = queue.pop()
+        if problem.isGoalState(node.state):
+            return [n.action for n in node.path()[1:]]
         visited.append(node.state)
 
         for child in node.extend(problem):
-            if not child.state in visited and not child in queue.list:
-                if problem.isGoalState(child.state):
-                    return [n.action for n in child.path()[1:]]
-                queue.push(child)
-    return None
+            if child.state in visited or not mutable and Node.inList(child, queue.list_elements()):
+                continue
+            queue.push(child)
+    return []
+
 
 def depthFirstSearch(problem):
     """
@@ -107,11 +106,13 @@ def depthFirstSearch(problem):
     print "Is the start a goal?", problem.isGoalState(problem.getStartState())
     print "Start's successors:", problem.getSuccessors(problem.getStartState())
     """
-    return DFS_BFS(problem, util.Stack())
+    return DFS_BFS(problem, True, util.Stack())
+
 
 def breadthFirstSearch(problem):
     """Search the shallowest nodes in the search tree first."""
-    return DFS_BFS(problem, util.Queue())
+    return DFS_BFS(problem, False, util.Queue())
+
 
 def UCS_AStar(problem, queue):
     node = Node(problem.getStartState())
@@ -125,15 +126,17 @@ def UCS_AStar(problem, queue):
         visited.append(node.state)
 
         for child in node.extend(problem):
-            if not child.state in visited:
-                queue.update(child)  # Check if exist or not exist in the queue,
+            if child.state in visited or not problem.isGoalState(child.state) and Node.inList(child, queue.list_elements()):
+                continue
+            queue.update(child)  # Check if exist or not exist in the queue,
                 # if exist, check if has a lower heuristic value then replace
-    return None
+    return []
 
 
 def uniformCostSearch(problem: SearchProblem):
     """Search the node of least total cost first."""
     return UCS_AStar(problem, util.PriorityQueueWithFunction(lambda node: node.heuristic_value))
+
 
 def nullHeuristic(state, problem=None):
     """
@@ -142,9 +145,12 @@ def nullHeuristic(state, problem=None):
     """
     return 0
 
+
 def aStarSearch(problem, heuristic=nullHeuristic):
     """Search the node that has the lowest combined cost and heuristic first."""
-    return UCS_AStar(problem, util.PriorityQueueWithFunction(lambda node: node.heuristic_value + heuristic(node.state, problem)))
+    return UCS_AStar(problem,
+                     util.PriorityQueueWithFunction(lambda node: node.heuristic_value + heuristic(node.state, problem)))
+
 
 # Abbreviations
 bfs = breadthFirstSearch
