@@ -131,28 +131,37 @@ class MinimaxAgent(MultiAgentSearchAgent):
           gameState.getNumAgents():
             Returns the total number of agents in the game
         """
-        return self.__max(gameState, 0)
+        return self.__max(gameState, 0)[1]
 
     def __max(self, gameState, depth):
         #  self.isWin() or self.isLose()
         if gameState.isWin() or gameState.isLose() or depth == self.depth:
-            return self.evaluationFunction(gameState)
+            return self.evaluationFunction(gameState), None
         v = float('-inf')
+        act = None
 
         for a in gameState.getLegalActions(0):
-            v = max(v, self.__min(gameState.generateSuccessor(0, a), depth, 1))
-        return v
+            v1, _ = self.__min(gameState.generateSuccessor(0, a), depth, 1)
+
+            if v1 > v:
+                v, act = v1, a
+        return v, act
+
     def __min(self, gameState, depth, agent):
-        if len(gameState.getLegalActions(agent)) == 0 or depth == self.depth:
-            return gameState.getScore(), None
+        if gameState.isWin() or gameState.isLose() or depth == self.depth:
+            return self.evaluationFunction(gameState), None
         v = float('inf')
+        act = None
 
         for a in gameState.getLegalActions(agent):
             if agent + 1 == gameState.getNumAgents():
-                v = min(v, self.__max(gameState.generateSuccessor(agent, a), depth + 1))
+                v1, _ = self.__max(gameState.generateSuccessor(agent, a), depth + 1)
             else:
-               v = min(v, self.__min(gameState.generateSuccessor(agent, a), depth, agent + 1))
-        return v
+               v1, _ = self.__min(gameState.generateSuccessor(agent, a), depth, agent + 1)
+
+            if v1 < v:
+                v, act = v1, a
+        return v, act
 
 
 class AlphaBetaAgent(MultiAgentSearchAgent):
