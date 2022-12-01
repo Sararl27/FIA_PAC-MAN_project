@@ -155,9 +155,9 @@ class GradingAgent(Agent):
         self.suboptimalMoves = []
         self.wrongStatesExplored = -1
         # boolean vectors represent types of implementation the student could have
-        self.actionsConsistentWithOptimal = [True for i in range(len(optimalActions[0]))]
-        self.actionsConsistentWithAlternativeDepth = [True for i in range(len(altDepthActions[0]))]
-        self.actionsConsistentWithPartialPlyBug = [True for i in range(len(partialPlyBugActions[0]))]
+        self.actionsConsistentWithOptimal = [True] * len(optimalActions[0])
+        self.actionsConsistentWithAlternativeDepth =[True] * len(altDepthActions[0])
+        self.actionsConsistentWithPartialPlyBug = [True] * len(partialPlyBugActions[0])
         # keep track of elapsed moves
         self.stepCount = 0
         self.seed = seed
@@ -170,6 +170,7 @@ class GradingAgent(Agent):
     def getAction(self, state):
         GameState.getAndResetExplored()
         studentAction = (self.studentAgent.getAction(state), len(GameState.getAndResetExplored()))
+
         optimalActions = self.optimalActions[self.stepCount]
         altDepthActions = self.altDepthActions[self.stepCount]
         partialPlyBugActions = self.partialPlyBugActions[self.stepCount]
@@ -303,9 +304,9 @@ class PacmanGameTreeTest(testClasses.TestCase):
         # load student code and staff code solutions
         multiAgents = moduleDict['multiAgents']
         studentAgent = getattr(multiAgents, self.alg)(depth=self.depth)
-        allActions = map(lambda x: json.loads(x), solutionDict['optimalActions'].split('\n'))
-        altDepthActions = map(lambda x: json.loads(x), solutionDict['altDepthActions'].split('\n'))
-        partialPlyBugActions = map(lambda x: json.loads(x), solutionDict['partialPlyBugActions'].split('\n'))
+        allActions = list(map(lambda x: json.loads(x), solutionDict['optimalActions'].split('\n')))
+        altDepthActions = list(map(lambda x: json.loads(x), solutionDict['altDepthActions'].split('\n')))
+        partialPlyBugActions = list(map(lambda x: json.loads(x), solutionDict['partialPlyBugActions'].split('\n')))
         # set up game state and play a game
         random.seed(self.seed)
         lay = layout.Layout([l.strip() for l in self.layout_text.split('\n')])
