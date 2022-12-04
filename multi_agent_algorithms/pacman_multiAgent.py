@@ -1,4 +1,4 @@
-# pacman.py
+# pacman_multiAgent.py
 # ---------
 # Licensing Information:  You are free to use or extend these projects for
 # educational purposes provided that (1) you do not distribute or publish
@@ -36,7 +36,7 @@ code to run a game.  This file is divided into three sections:
           linking in all the external parts (agent functions, graphics).
           Check this section out to see all the options available to you.
 
-To play your first game, type 'python pacman.py' from the command line.
+To play your first game, type 'python pacman_multiAgent.py' from the command line.
 The keys are 'a', 's', 'd', and 'w' to move (or arrow keys).  Have fun!
 """
 from game import GameStateData
@@ -479,11 +479,11 @@ def readCommand( argv ):
     """
     from optparse import OptionParser
     usageStr = """
-    USAGE:      python pacman.py <options>
-    EXAMPLES:   (1) python pacman.py
+    USAGE:      python pacman_multiAgent.py <options>
+    EXAMPLES:   (1) python pacman_multiAgent.py
                     - starts an interactive game
-                (2) python pacman.py --layout smallClassic --zoom 2
-                OR  python pacman.py -l smallClassic -z 2
+                (2) python pacman_multiAgent.py --layout smallClassic --zoom 2
+                OR  python pacman_multiAgent.py -l smallClassic -z 2
                     - starts an interactive game on a smaller board, zoomed in
     """
     parser = OptionParser(usageStr)
@@ -667,14 +667,14 @@ def runGames( layout, pacman, ghosts, display, numGames, record, numTraining = 0
 
 if __name__ == '__main__':
     """
-    The main function called when pacman.py is run
+    The main function called when pacman_multiAgent.py is run
     from the command line:
 
-    > python pacman.py
+    > python pacman_multiAgent.py
 
     See the usage string for more details.
 
-    > python pacman.py --help
+    > python pacman_multiAgent.py --help
     """
     args = readCommand( sys.argv[1:] ) # Get game components based on input
     runGames( **args )

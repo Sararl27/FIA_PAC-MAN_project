@@ -28,10 +28,10 @@ from pprint import PrettyPrinter
 pp = PrettyPrinter()
 
 from game import Agent
-from pacman import GameState
+from pacman_multiAgent import GameState
 from ghostAgents import RandomGhost, DirectionalGhost
 import random, math, traceback, sys, os
-import layout, pacman
+import layout, pacman_multiAgent
 import autograder_multiAgent
 # import grading
 
@@ -136,7 +136,7 @@ def run(lay, layName, pac, ghosts, disp, nGames=1, name='games'):
     """
     starttime = time.time()
     print('*** Running %s on' % name, layName, '%d time(s).' % nGames)
-    games = pacman.runGames(lay, pac, ghosts, disp, nGames, False, catchExceptions=True, timeout=120)
+    games = pacman_multiAgent.runGames(lay, pac, ghosts, disp, nGames, False, catchExceptions=True, timeout=120)
     print('*** Finished running %s on' % name, layName, 'after %d seconds.' % (time.time() - starttime))
     stats = {'time': time.time() - starttime, 'wins': [g.state.isWin() for g in games].count(True), 'games': games, 'scores': [g.state.getScore() for g in games],
              'timeouts': [g.agentTimeout for g in games].count(True), 'crashes': [g.agentCrashed for g in games].count(True)}

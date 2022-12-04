@@ -56,7 +56,7 @@ class ReflexAgent(Agent):
         Design a better evaluation function here.
 
         The evaluation function takes in the current and proposed successor
-        GameStates (pacman.py) and returns a number, where higher numbers are better.
+        GameStates (pacman_multiAgent.py) and returns a number, where higher numbers are better.
 
         The code below extracts some useful information from the state, like the
         remaining food (newFood) and Pacman position after moving (newPos).
@@ -66,7 +66,7 @@ class ReflexAgent(Agent):
         Print out these variables to see what you're getting, then combine them
         to create a masterful evaluation function.
         """
-        # Useful information you can extract from a GameState (pacman.py)
+        # Useful information you can extract from a GameState (pacman_multiAgent.py)
         successorGameState = currentGameState.generatePacmanSuccessor(action)
         newPos = successorGameState.getPacmanPosition()
         newFood = successorGameState.getFood()

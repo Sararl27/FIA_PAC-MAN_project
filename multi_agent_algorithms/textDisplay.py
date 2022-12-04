@@ -14,7 +14,7 @@
 
 import time
 try: 
-    import pacman
+    import pacman_multiAgent
 except:
     pass
 
