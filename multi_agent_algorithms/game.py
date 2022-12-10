@@ -550,7 +550,10 @@ class Game:
     def mute(self, agentIndex):
         if not self.muteAgents: return
         global OLD_STDOUT, OLD_STDERR
-        from io import StringIO
+        try:
+            from StringIO import StringIO  ## for Python 2
+        except ImportError:
+            from io import StringIO  ## for Python 3
         OLD_STDOUT = sys.stdout
         OLD_STDERR = sys.stderr
         sys.stdout = self.agentOutput[agentIndex]

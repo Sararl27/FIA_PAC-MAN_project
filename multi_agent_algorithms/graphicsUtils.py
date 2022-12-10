@@ -60,6 +60,7 @@ def sleep(secs):
 
 
 def begin_graphics(width=640, height=480, color=formatColor(0, 0, 0), title=None):
+
     global _root_window, _canvas, _canvas_x, _canvas_y, _canvas_xs, _canvas_ys, _bg_color
 
     # Check for duplicate call
@@ -234,10 +235,7 @@ def moveCircle(id, pos, r, endpoints=None):
         e = list(endpoints)
     while e[0] > e[1]: e[1] = e[1] + 360
 
-    if os.path.isfile('flag'):
-        edit(id, ('extent', e[1] - e[0]))
-    else:
-        edit(id, ('start', e[0]), ('extent', e[1] - e[0]))
+    edit(id, ('start', e[0]), ('extent', e[1] - e[0]))
     move_to(id, x0, y0)
 
 
