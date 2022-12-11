@@ -75,7 +75,7 @@ def tinyMazeSearch(problem):
     return  [s, s, w, s, w, w, s, w]
 
 
-def DFS_BFS(problem, no_multiple_ref, queue):
+def DFS_BFS(problem, not_multiple_ref, queue):
     queue.push(Node(problem.getStartState()))
     visited = []
 
@@ -86,7 +86,7 @@ def DFS_BFS(problem, no_multiple_ref, queue):
         visited.append(node.state)
 
         for child in node.extend(problem):
-            if child.state in visited or no_multiple_ref and Node.inList(child, queue.list_elements()):
+            if child.state in visited or not_multiple_ref and Node.inList(child, queue.list_elements()):
                 continue
             queue.push(child)
     return []
