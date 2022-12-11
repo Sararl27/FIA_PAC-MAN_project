@@ -75,7 +75,7 @@ def tinyMazeSearch(problem):
     return  [s, s, w, s, w, w, s, w]
 
 
-def DFS_BFS(problem, multiple, queue):
+def DFS_BFS(problem, no_multiple_ref, queue):
     queue.push(Node(problem.getStartState()))
     visited = []
 
@@ -86,7 +86,7 @@ def DFS_BFS(problem, multiple, queue):
         visited.append(node.state)
 
         for child in node.extend(problem):
-            if child.state in visited or not multiple and Node.inList(child, queue.list_elements()):
+            if child.state in visited or no_multiple_ref and Node.inList(child, queue.list_elements()):
                 continue
             queue.push(child)
     return []
@@ -106,12 +106,12 @@ def depthFirstSearch(problem):
     print("Is the start a goal?", problem.isGoalState(problem.getStartState()))
     print("Start's successors:", problem.getSuccessors(problem.getStartState()))
     """
-    return DFS_BFS(problem, True, util.Stack())
+    return DFS_BFS(problem, False, util.Stack())
 
 
 def breadthFirstSearch(problem):
     """Search the shallowest nodes in the search tree first."""
-    return DFS_BFS(problem, False, util.Queue())
+    return DFS_BFS(problem, True, util.Queue())
 
 
 def UCS_AStar(problem, queue):
