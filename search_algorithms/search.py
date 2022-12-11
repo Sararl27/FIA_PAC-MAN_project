@@ -75,7 +75,7 @@ def tinyMazeSearch(problem):
     return  [s, s, w, s, w, w, s, w]
 
 
-def DFS_BFS(problem, not_multiple_ref, queue):
+def DFS_BFS(problem, queue):
     queue.push(Node(problem.getStartState()))
     visited = []
 
@@ -83,12 +83,13 @@ def DFS_BFS(problem, not_multiple_ref, queue):
         node = queue.pop()
         if problem.isGoalState(node.state):
             return [n.action for n in node.path()[1:]]
-        visited.append(node.state)
+        if node.state not in visited:
+            visited.append(node.state)
 
-        for child in node.extend(problem):
-            if child.state in visited or not_multiple_ref and Node.inList(child, queue.list_elements()):
-                continue
-            queue.push(child)
+            for child in node.extend(problem):
+                if child.state in visited: # Avoid adding already visited nodes which would be ignored with the condition above (optimization)
+                    continue
+                queue.push(child)
     return []
 
 
@@ -106,12 +107,12 @@ def depthFirstSearch(problem):
     print("Is the start a goal?", problem.isGoalState(problem.getStartState()))
     print("Start's successors:", problem.getSuccessors(problem.getStartState()))
     """
-    return DFS_BFS(problem, False, util.Stack())
+    return DFS_BFS(problem, util.Stack())
 
 
 def breadthFirstSearch(problem):
     """Search the shallowest nodes in the search tree first."""
-    return DFS_BFS(problem, True, util.Queue())
+    return DFS_BFS(problem, util.Queue())
 
 
 def UCS_AStar(problem, queue):
@@ -123,13 +124,14 @@ def UCS_AStar(problem, queue):
         node = queue.pop()
         if problem.isGoalState(node.state):
             return [n.action for n in node.path()[1:]]
-        visited.append(node.state)
+        if node.state not in visited:
+            visited.append(node.state)
 
-        for child in node.extend(problem):
-            if child.state in visited or not problem.isGoalState(child.state) and Node.inList(child, queue.list_elements()):
-                continue
-            queue.update(child)  # Check if exist or not exist in the queue,
-                # if exist, check if has a lower heuristic value then replace
+            for child in node.extend(problem):
+                if child.state in visited: # Avoid adding already visited nodes which would be ignored with the condition above (optimization)
+                    continue
+                queue.update(child)  # Check if exist or not exist in the queue,
+                    # if exist, check if has a lower heuristic value then replace
     return []
 
 
