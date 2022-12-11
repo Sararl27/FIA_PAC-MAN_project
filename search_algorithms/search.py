@@ -75,20 +75,20 @@ def tinyMazeSearch(problem):
     return  [s, s, w, s, w, w, s, w]
 
 
-def DFS_BFS(problem, not_multiple_ref, to_visit):
-    to_visit.push(Node(problem.getStartState()))
+def DFS_BFS(problem, not_multiple_ref, queue):
+    queue.push(Node(problem.getStartState()))
     visited = []
 
-    while not to_visit.isEmpty():
-        node = to_visit.pop()
+    while not queue.isEmpty():
+        node = queue.pop()
         if problem.isGoalState(node.state):
             return [n.action for n in node.path()[1:]]
         visited.append(node.state)
 
         for child in node.extend(problem):
-            if child.state in visited or not_multiple_ref and Node.inList(child, to_visit.list_elements()):
+            if child.state in visited or not_multiple_ref and Node.inList(child, queue.list_elements()):
                 continue
-            to_visit.push(child)
+            queue.push(child)
     return []
 
 
