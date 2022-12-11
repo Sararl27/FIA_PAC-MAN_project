@@ -1,19 +1,20 @@
-# autograder_multiAgent.py
+# autograder.py
 # -------------
 # Licensing Information:  You are free to use or extend these projects for
 # educational purposes provided that (1) you do not distribute or publish
 # solutions, (2) you retain this notice, and (3) you provide clear
 # attribution to UC Berkeley, including a link to http://ai.berkeley.edu.
-# 
+#
 # Attribution Information: The Pacman AI projects were developed at UC Berkeley.
 # The core projects and autograders were primarily created by John DeNero
 # (denero@cs.berkeley.edu) and Dan Klein (klein@cs.berkeley.edu).
 # Student side autograding was added by Brad Miller, Nick Hay, and
 # Pieter Abbeel (pabbeel@cs.berkeley.edu).
-import importlib
+
 
 # imports from python standard library
 import grading
+import imp
 import optparse
 import os
 import re
@@ -21,8 +22,8 @@ import sys
 import projectParams
 import random
 random.seed(0)
-try: 
-    from pacman import GameState
+try:
+    from pacman_search import GameState
 except:
     pass
 
@@ -30,10 +31,9 @@ except:
 def readCommand(argv):
     parser = optparse.OptionParser(description = 'Run public tests on student code')
     parser.set_defaults(generateSolutions=False, edxOutput=False, gsOutput=False, muteOutput=False, printTestCase=False, noGraphics=False)
-
     parser.add_option('--test-directory',
                       dest = 'testRoot',
-                      default = f'test_cases/',
+                      default = 'test_cases',
                       help = 'Root test directory which contains subdirectories corresponding to each question')
     parser.add_option('--student-code',
                       dest = 'studentCode',
@@ -114,7 +114,7 @@ def setModuleName(module, filename):
         elif type(o) == classType:
             setattr(o, '__file__', filename)
             # TODO: assign member __file__'s?
-        #print i, type(o)
+        #print(i, type(o))
 
 
 #from cStringIO import StringIO
@@ -125,15 +125,16 @@ def loadModuleString(moduleSource):
     #
     #f = StringIO(moduleCodeDict[k])
     #tmp = imp.load_module(k, f, k, (".py", "r", imp.PY_SOURCE))
-    tmp = importlib.util.module_from_spec(moduleSource)
-    exec(moduleCodeDict[k], tmp.__dict__)
+    tmp = imp.new_module(k)
+    exec(moduleCodeDict[k] in tmp.__dict__)
     setModuleName(tmp, k)
     return tmp
 
 import py_compile
 
 def loadModuleFile(moduleName, filePath):
-    return importlib.import_module(moduleName)
+    with open(filePath, 'r') as f:
+        return imp.load_module(moduleName, f, "%s.py" % moduleName, (".py", "r", imp.PY_SOURCE))
 
 
 def readFile(path, root=""):

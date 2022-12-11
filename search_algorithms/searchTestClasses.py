@@ -10,18 +10,17 @@
 # (denero@cs.berkeley.edu) and Dan Klein (klein@cs.berkeley.edu).
 # Student side autograding was added by Brad Miller, Nick Hay, and
 # Pieter Abbeel (pabbeel@cs.berkeley.edu).
-import pprint
-import re
-import sys
 
+
+import sys
+import re
 import testClasses
 import textwrap
 
 # import project specific code
 import layout
-import pacman
+import pacman_search
 from search import SearchProblem
-
 
 # helper function for printing solutions in solution files
 def wrap_solution(solution):
@@ -31,27 +30,26 @@ def wrap_solution(solution):
         return str(solution)
 
 
-def followAction(state, action, problem):
-    for successor1, action1, cost1 in problem.getSuccessors(state):
-        if action == action1: return successor1
-    return None
 
+
+def followAction(state, action, problem):
+  for successor1, action1, cost1 in problem.getSuccessors(state):
+    if action == action1: return successor1
+  return None
 
 def followPath(path, problem):
-    state = problem.getStartState()
-    states = [state]
-    for action in path:
-        state = followAction(state, action, problem)
-        states.append(state)
-    return states
-
+  state = problem.getStartState()
+  states = [state]
+  for action in path:
+    state = followAction(state, action, problem)
+    states.append(state)
+  return states
 
 def checkSolution(problem, path):
-    state = problem.getStartState()
-    for action in path:
-        state = followAction(state, action, problem)
-    return problem.isGoalState(state)
-
+  state = problem.getStartState()
+  for action in path:
+    state = followAction(state, action, problem)
+  return problem.isGoalState(state)
 
 # Search problem on a plain graph
 class GraphSearch(SearchProblem):
@@ -61,18 +59,18 @@ class GraphSearch(SearchProblem):
         self.expanded_states = []
         lines = graph_text.split('\n')
         r = re.match('start_state:(.*)', lines[0])
-        if r is None:
+        if r == None:
             print("Broken graph:")
             print('"""%s"""' % graph_text)
-            raise Exception("GraphSearch graph specification start_state not found or incorrect on line:" + l)
+            raise Exception("GraphSearch graph specification start_state not found or incorrect on line 0")
         self.start_state = r.group(1).strip()
         r = re.match('goal_states:(.*)', lines[1])
-        if r is None:
+        if r == None:
             print("Broken graph:")
             print('"""%s"""' % graph_text)
-            raise Exception("GraphSearch graph specification goal_states not found or incorrect on line:" + l)
+            raise Exception("GraphSearch graph specification goal_states not found or incorrect on line 1")
         goals = r.group(1).split()
-        self.goals = tuple(map(str.strip, goals))
+        self.goals = [str.strip(g) for g in goals]
         self.successors = {}
         all_states = set()
         self.orderedSuccessorTuples = []
@@ -135,9 +133,10 @@ class GraphSearch(SearchProblem):
         print(self.successors)
         edges = ["%s %s %s %s" % t for t in self.orderedSuccessorTuples]
         return \
-            """start_state: %s
+"""start_state: %s
 goal_states: %s
 %s""" % (self.start_state, " ".join(self.goals), "\n".join(edges))
+
 
 
 def parseHeuristic(heuristicText):
@@ -146,8 +145,8 @@ def parseHeuristic(heuristicText):
         tokens = line.split()
         if len(tokens) != 2:
             print("Broken heuristic:")
-            print('"""%s"""' % graph_text)
-            raise Exception("GraphSearch heuristic specification broken:" + l)
+            print('"""%s"""' % heuristicText)
+            raise Exception("GraphSearch heuristic specification broken at tokens:" + str(tokens))
         state, h = tokens
         heuristic[state] = float(h)
 
@@ -155,6 +154,7 @@ def parseHeuristic(heuristicText):
         if state in heuristic:
             return heuristic[state]
         else:
+            import pprint
             pp = pprint.PrettyPrinter(indent=4)
             print("Heuristic:")
             pp.pprint(heuristic)
@@ -198,8 +198,7 @@ class GraphSearchTest(testClasses.TestCase):
         search = moduleDict['search']
         searchAgents = moduleDict['searchAgents']
         gold_solution = [str.split(solutionDict['solution']), str.split(solutionDict['rev_solution'])]
-        gold_expanded_states = [str.split(solutionDict['expanded_states']),
-                                str.split(solutionDict['rev_expanded_states'])]
+        gold_expanded_states = [str.split(solutionDict['expanded_states']), str.split(solutionDict['rev_expanded_states'])]
 
         solution, expanded_states, error = self.getSolInfo(search)
         if error != None:
@@ -254,6 +253,7 @@ class GraphSearchTest(testClasses.TestCase):
         return True
 
 
+
 class PacmanSearchTest(testClasses.TestCase):
 
     def __init__(self, question, testDict):
@@ -268,10 +268,11 @@ class PacmanSearchTest(testClasses.TestCase):
         self.searchProblemClassName = testDict.get('searchProblemClass', 'PositionSearchProblem')
         self.heuristicName = testDict.get('heuristic', None)
 
+
     def getSolInfo(self, search, searchAgents):
         alg = getattr(search, self.alg)
         lay = layout.Layout([l.strip() for l in self.layout_text.split('\n')])
-        start_state = pacman.GameState()
+        start_state = pacman_search.GameState()
         start_state.initialize(lay, 0)
 
         problemClass = getattr(searchAgents, self.searchProblemClassName)
@@ -337,6 +338,7 @@ class PacmanSearchTest(testClasses.TestCase):
         grades.addMessage('\tnodes expanded:\t\t%s' % expanded)
         return True
 
+
     def writeSolution(self, moduleDict, filePath):
         search = moduleDict['search']
         searchAgents = moduleDict['searchAgents']
@@ -345,8 +347,7 @@ class PacmanSearchTest(testClasses.TestCase):
         handle.write('# This is the solution file for %s.\n' % self.path)
         handle.write('# This solution is designed to support both right-to-left\n')
         handle.write('# and left-to-right implementations.\n')
-        handle.write(
-            '# Number of nodes expanded must be with a factor of %s of the numbers below.\n' % self.leewayFactor)
+        handle.write('# Number of nodes expanded must be with a factor of %s of the numbers below.\n' % self.leewayFactor)
 
         # write forward solution
         solution, expanded, error = self.getSolInfo(search, searchAgents)
@@ -368,19 +369,16 @@ class PacmanSearchTest(testClasses.TestCase):
 
 
 from game import Actions
-
-
 def getStatesFromPath(start, path):
     "Returns the list of states visited along the path"
     vis = [start]
     curr = start
     for a in path:
-        x, y = curr
+        x,y = curr
         dx, dy = Actions.directionToVector(a)
         curr = (int(x + dx), int(y + dy))
         vis.append(curr)
     return vis
-
 
 class CornerProblemTest(testClasses.TestCase):
 
@@ -399,8 +397,8 @@ class CornerProblemTest(testClasses.TestCase):
         gameState = pacman.GameState()
         gameState.initialize(lay, 0)
         visited = getStatesFromPath(gameState.getPacmanPosition(), path)
-        top, right = gameState.getWalls().height - 2, gameState.getWalls().width - 2
-        missedCorners = [p for p in ((1, 1), (1, top), (right, 1), (right, top)) if p not in visited]
+        top, right = gameState.getWalls().height-2, gameState.getWalls().width-2
+        missedCorners = [p for p in ((1,1), (1,top), (right, 1), (right, top)) if p not in visited]
 
         return path, missedCorners
 
@@ -449,6 +447,8 @@ class CornerProblemTest(testClasses.TestCase):
 
         handle.write('solution_length: "%s"\n' % length)
         handle.close()
+
+
 
 
 # template = """class: "HeuristicTest"
@@ -544,6 +544,10 @@ class HeuristicTest(testClasses.TestCase):
         return True
 
 
+
+
+
+
 class HeuristicGrade(testClasses.TestCase):
 
     def __init__(self, question, testDict):
@@ -565,6 +569,7 @@ class HeuristicGrade(testClasses.TestCase):
         heuristic = getattr(searchAgents, self.heuristicName)
 
         return problem, state, heuristic
+
 
     def execute(self, grades, moduleDict, solutionDict):
         search = moduleDict['search']
@@ -596,12 +601,16 @@ class HeuristicGrade(testClasses.TestCase):
 
         return True
 
+
     def writeSolution(self, moduleDict, filePath):
         handle = open(filePath, 'w')
         handle.write('# This is the solution file for %s.\n' % self.path)
         handle.write('# File intentionally blank.\n')
         handle.close()
         return True
+
+
+
 
 
 # template = """class: "ClosestDotTest"
@@ -673,6 +682,8 @@ class ClosestDotTest(testClasses.TestCase):
         return True
 
 
+
+
 class CornerHeuristicSanity(testClasses.TestCase):
 
     def __init__(self, question, testDict):
@@ -712,13 +723,13 @@ class CornerHeuristicSanity(testClasses.TestCase):
             heuristics.append(searchAgents.cornersHeuristic(state, problem))
         for i in range(0, len(heuristics) - 1):
             h0 = heuristics[i]
-            h1 = heuristics[i + 1]
+            h1 = heuristics[i+1]
             # cornerConsistencyB
             if h0 - h1 > 1:
                 grades.addMessage('FAIL: inconsistent heuristic')
                 return False
             # cornerPosH
-            if h0 < 0 or h1 < 0:
+            if h0 < 0 or h1 <0:
                 grades.addMessage('FAIL: non-positive heuristic')
                 return False
         # cornerGoalH
@@ -749,6 +760,7 @@ class CornerHeuristicSanity(testClasses.TestCase):
         return True
 
 
+
 class CornerHeuristicPacman(testClasses.TestCase):
 
     def __init__(self, question, testDict):
@@ -760,7 +772,7 @@ class CornerHeuristicPacman(testClasses.TestCase):
         searchAgents = moduleDict['searchAgents']
         total = 0
         true_cost = float(solutionDict['cost'])
-        thresholds = map(int, solutionDict['thresholds'].split())
+        thresholds = [int(x) for x in solutionDict['thresholds'].split()]
         game_state = pacman.GameState()
         lay = layout.Layout([l.strip() for l in self.layout_text.split('\n')])
         game_state.initialize(lay, 0)
@@ -808,3 +820,4 @@ class CornerHeuristicPacman(testClasses.TestCase):
         handle.write('thresholds: "2000 1600 1200"\n')
         handle.close()
         return True
+

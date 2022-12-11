@@ -1,10 +1,10 @@
-# pacman_multiAgent.py
+# pacman_multiagent.py
 # ---------
 # Licensing Information:  You are free to use or extend these projects for
 # educational purposes provided that (1) you do not distribute or publish
 # solutions, (2) you retain this notice, and (3) you provide clear
 # attribution to UC Berkeley, including a link to http://ai.berkeley.edu.
-#
+# 
 # Attribution Information: The Pacman AI projects were developed at UC Berkeley.
 # The core projects and autograders were primarily created by John DeNero
 # (denero@cs.berkeley.edu) and Dan Klein (klein@cs.berkeley.edu).
@@ -36,7 +36,7 @@ code to run a game.  This file is divided into three sections:
           linking in all the external parts (agent functions, graphics).
           Check this section out to see all the options available to you.
 
-To play your first game, type 'python pacman_multiAgent.py' from the command line.
+To play your first game, type 'python pacman_multiagent.py' from the command line.
 The keys are 'a', 's', 'd', and 'w' to move (or arrow keys).  Have fun!
 """
 from game import GameStateData
@@ -479,11 +479,11 @@ def readCommand( argv ):
     """
     from optparse import OptionParser
     usageStr = """
-    USAGE:      python pacman_multiAgent.py <options>
-    EXAMPLES:   (1) python pacman_multiAgent.py
+    USAGE:      python pacman_multiagent.py <options>
+    EXAMPLES:   (1) python pacman_multiagent.py
                     - starts an interactive game
-                (2) python pacman_multiAgent.py --layout smallClassic --zoom 2
-                OR  python pacman_multiAgent.py -l smallClassic -z 2
+                (2) python pacman_multiagent.py --layout smallClassic --zoom 2
+                OR  python pacman_multiagent.py -l smallClassic -z 2
                     - starts an interactive game on a smaller board, zoomed in
     """
     parser = OptionParser(usageStr)
@@ -538,6 +538,7 @@ def readCommand( argv ):
 
     # Choose a Pacman agent
     noKeyboard = options.gameToReplay == None and (options.textGraphics or options.quietGraphics)
+
     pacmanType = loadAgent(options.pacman, noKeyboard)
     agentOpts = parseAgentArgs(options.agentArgs)
     if options.numTraining > 0:
@@ -574,9 +575,9 @@ def readCommand( argv ):
     # Special case: recorded games don't use the runGames method or args structure
     if options.gameToReplay != None:
         print('Replaying recorded game %s.' % options.gameToReplay)
-        import cPickle
-        f = open(options.gameToReplay)
-        try: recorded = cPickle.load(f)
+        import pickle
+        f = open(options.gameToReplay, 'rb')
+        try: recorded = pickle.load(f)
         finally: f.close()
         recorded['display'] = args['display']
         replayGame(**recorded)
@@ -647,11 +648,11 @@ def runGames( layout, pacman, ghosts, display, numGames, record, numTraining = 0
         if not beQuiet: games.append(game)
 
         if record:
-            import time, cPickle
-            fname = ('recorded-game-%d' % (i + 1)) + '-'.join([str(t) for t in time.localtime()[1:6]])
-            f = open(fname, 'w')
+            import time, pickle
+            fname = ('recorded-game-%d' % (i + 1)) +  '-'.join([str(t) for t in time.localtime()[1:6]])
+            f = open(fname, 'wb')
             components = {'layout': layout, 'actions': game.moveHistory}
-            cPickle.dump(components, f)
+            pickle.dump(components, f)
             f.close()
 
     if (numGames-numTraining) > 0:
@@ -661,20 +662,20 @@ def runGames( layout, pacman, ghosts, display, numGames, record, numTraining = 0
         print('Average Score:', sum(scores) / float(len(scores)))
         print('Scores:       ', ', '.join([str(score) for score in scores]))
         print('Win Rate:      %d/%d (%.2f)' % (wins.count(True), len(wins), winRate))
-        print('Record:       ', ', '.join([['Loss', 'Win'][int(w)] for w in wins]))
+        print('Record:       ', ', '.join([ ['Loss', 'Win'][int(w)] for w in wins]))
 
     return games
 
 if __name__ == '__main__':
     """
-    The main function called when pacman_multiAgent.py is run
+    The main function called when pacman_multiagent.py is run
     from the command line:
 
-    > python pacman_multiAgent.py
+    > python pacman_multiagent.py
 
     See the usage string for more details.
 
-    > python pacman_multiAgent.py --help
+    > python pacman_multiagent.py --help
     """
     args = readCommand( sys.argv[1:] ) # Get game components based on input
     runGames( **args )

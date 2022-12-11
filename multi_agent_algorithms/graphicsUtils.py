@@ -4,7 +4,7 @@
 # educational purposes provided that (1) you do not distribute or publish
 # solutions, (2) you retain this notice, and (3) you provide clear
 # attribution to UC Berkeley, including a link to http://ai.berkeley.edu.
-# 
+#
 # Attribution Information: The Pacman AI projects were developed at UC Berkeley.
 # The core projects and autograders were primarily created by John DeNero
 # (denero@cs.berkeley.edu) and Dan Klein (klein@cs.berkeley.edu).
@@ -23,13 +23,13 @@ import os.path
 
 _Windows = sys.platform == 'win32'  # True if on Win95/98/NT
 
-_root_window = None  # The root window for graphics output
-_canvas = None  # The canvas which holds graphics
-_canvas_xs = None  # Size of canvas object
+_root_window = None      # The root window for graphics output
+_canvas = None      # The canvas which holds graphics
+_canvas_xs = None      # Size of canvas object
 _canvas_ys = None
-_canvas_x = None  # Current position on canvas
+_canvas_x = None      # Current position on canvas
 _canvas_y = None
-_canvas_col = None  # Current colour (set to black below)
+_canvas_col = None      # Current colour (set to black below)
 _canvas_tsize = 12
 _canvas_tserifs = 0
 
@@ -39,7 +39,7 @@ def formatColor(r, g, b):
 
 
 def colorToVector(color):
-    return map(lambda x: int(x, 16) / 256.0, [color[1:3], color[3:5], color[5:7]])
+    return [int(x, 16) / 256.0 for x in [color[1:3], color[3:5], color[5:7]]]
 
 
 if _Windows:
@@ -142,25 +142,26 @@ def wait_for_click():
 
 
 def draw_background():
-    corners = [(0, 0), (0, _canvas_ys), (_canvas_xs, _canvas_ys), (_canvas_xs, 0)]
-    polygon(corners, _bg_color, fillColor=_bg_color, filled=True, smoothed=False)
+    corners = [(0, 0), (0, _canvas_ys),
+               (_canvas_xs, _canvas_ys), (_canvas_xs, 0)]
+    polygon(corners, _bg_color, fillColor=_bg_color,
+            filled=True, smoothed=False)
 
 
 def _destroy_window(event=None):
     sys.exit(0)
-
-
 #    global _root_window
 #    _root_window.destroy()
 #    _root_window = None
-# print "DESTROY"
+    # print "DESTROY"
+
 
 def end_graphics():
     global _root_window, _canvas, _mouse_enabled
     try:
         try:
             sleep(1)
-            if _root_window is not None:
+            if _root_window != None:
                 _root_window.destroy()
         except SystemExit as e:
             print('Ending graphics raised an exception:', e)
@@ -183,9 +184,12 @@ def polygon(coords, outlineColor, fillColor=None, filled=1, smoothed=1, behind=0
     for coord in coords:
         c.append(coord[0])
         c.append(coord[1])
-    if fillColor == None: fillColor = outlineColor
-    if filled == 0: fillColor = ""
-    poly = _canvas.create_polygon(c, outline=outlineColor, fill=fillColor, smooth=smoothed, width=width)
+    if fillColor == None:
+        fillColor = outlineColor
+    if filled == 0:
+        fillColor = ""
+    poly = _canvas.create_polygon(
+        c, outline=outlineColor, fill=fillColor, smooth=smoothed, width=width)
     if behind > 0:
         _canvas.tag_lower(poly, behind)  # Higher should be more visible
     return poly
@@ -205,7 +209,8 @@ def circle(pos, r, outlineColor, fillColor, endpoints=None, style='pieslice', wi
         e = [0, 359]
     else:
         e = list(endpoints)
-    while e[0] > e[1]: e[1] = e[1] + 360
+    while e[0] > e[1]:
+        e[1] = e[1] + 360
 
     return _canvas.create_arc(x0, y0, x1, y1, outline=outlineColor, fill=fillColor,
                               extent=e[1] - e[0], start=e[0], style=style, width=width)
@@ -225,17 +230,21 @@ def moveCircle(id, pos, r, endpoints=None):
     global _canvas_x, _canvas_y
 
     x, y = pos
-    #    x0, x1 = x - r, x + r + 1
-    #    y0, y1 = y - r, y + r + 1
+#    x0, x1 = x - r, x + r + 1
+#    y0, y1 = y - r, y + r + 1
     x0, x1 = x - r - 1, x + r
     y0, y1 = y - r - 1, y + r
     if endpoints == None:
         e = [0, 359]
     else:
         e = list(endpoints)
-    while e[0] > e[1]: e[1] = e[1] + 360
+    while e[0] > e[1]:
+        e[1] = e[1] + 360
 
-    edit(id, ('start', e[0]), ('extent', e[1] - e[0]))
+    if os.path.isfile('flag'):
+        edit(id, ('extent', e[1] - e[0]))
+    else:
+        edit(id, ('start', e[0]), ('extent', e[1] - e[0]))
     move_to(id, x0, y0)
 
 
@@ -265,12 +274,12 @@ def line(here, there, color=formatColor(0, 0, 0), width=2):
     x1, y1 = there[0], there[1]
     return _canvas.create_line(x0, y0, x1, y1, fill=color, width=width)
 
-
 ##############################################################################
 ### Keypress handling ########################################################
 ##############################################################################
 
 # We bind to key-down and key-up events.
+
 
 _keysdown = {}
 _keyswaiting = {}
@@ -284,7 +293,7 @@ def _keypress(event):
     # remap_arrows(event)
     _keysdown[event.keysym] = 1
     _keyswaiting[event.keysym] = 1
-    #    print event.char, event.keycode
+#    print event.char, event.keycode
     _got_release = None
 
 
@@ -320,21 +329,21 @@ def _clear_keys(event=None):
 
 
 def keys_pressed(d_o_e=lambda arg: _root_window.dooneevent(arg),
-        d_w=tkinter._tkinter.DONT_WAIT):
+                 d_w=tkinter._tkinter.DONT_WAIT):
     d_o_e(d_w)
     if _got_release:
         d_o_e(d_w)
-    return _keysdown.keys()
+    return list(_keysdown.keys())
 
 
 def keys_waiting():
     global _keyswaiting
-    keys = _keyswaiting.keys()
+    keys = list(_keyswaiting.keys())
     _keyswaiting = {}
     return keys
 
-
 # Block for a list of keys...
+
 
 def wait_for_keys():
     keys = []
@@ -344,10 +353,12 @@ def wait_for_keys():
     return keys
 
 
-def remove_from_screen(x, d_o_e=lambda arg: _root_window.dooneevent(arg),
+def remove_from_screen(x,
+                       d_o_e=lambda arg: _root_window.dooneevent(arg),
                        d_w=tkinter._tkinter.DONT_WAIT):
     _canvas.delete(x)
     d_o_e(d_w)
+
 
 def _adjust_coords(coord_list, x, y):
     for i in range(0, len(coord_list), 2):
@@ -356,13 +367,14 @@ def _adjust_coords(coord_list, x, y):
     return coord_list
 
 
-def move_to(object, x, y=None, d_o_e=lambda arg: _root_window.dooneevent(arg),
-                       d_w=tkinter._tkinter.DONT_WAIT):
+def move_to(object, x, y=None,
+            d_o_e=lambda arg: _root_window.dooneevent(arg),
+            d_w=tkinter._tkinter.DONT_WAIT):
     if y is None:
         try:
             x, y = x
         except:
-            raise 'incomprehensible coordinates'
+            raise Exception('incomprehensible coordinates')
 
     horiz = True
     newCoords = []
@@ -380,8 +392,9 @@ def move_to(object, x, y=None, d_o_e=lambda arg: _root_window.dooneevent(arg),
     d_o_e(d_w)
 
 
-def move_by(object, x, y=None, d_o_e=lambda arg: _root_window.dooneevent(arg),
-                       d_w=tkinter._tkinter.DONT_WAIT, lift=False):
+def move_by(object, x, y=None,
+            d_o_e=lambda arg: _root_window.dooneevent(arg),
+            d_w=tkinter._tkinter.DONT_WAIT, lift=False):
     if y is None:
         try:
             x, y = x
@@ -407,7 +420,7 @@ def move_by(object, x, y=None, d_o_e=lambda arg: _root_window.dooneevent(arg),
 
 def writePostscript(filename):
     "Writes the current canvas to a postscript file."
-    psfile = open(filename, 'w')
+    psfile = file(filename, 'w')
     psfile.write(_canvas.postscript(pageanchor='sw',
                                     y='0.c',
                                     x='0.c'))
