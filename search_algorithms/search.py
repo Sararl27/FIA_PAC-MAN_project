@@ -131,7 +131,7 @@ def UCS_AStar(problem, queue):
                 if child.state in visited: # Avoid adding already visited nodes which would be ignored with the condition above (optimization)
                     continue
                 queue.update(child)  # Check if exist or not exist in the queue,
-                                     # if exist, check if has a lower heuristic value then replace
+                                     # in case that it is in, check if has a lower heuristic value then replace it
     return []
 
 
