@@ -134,7 +134,6 @@ class MinimaxAgent(MultiAgentSearchAgent):
         return self.__max(gameState, 0)[1]
 
     def __max(self, gameState, depth):
-        #  self.isWin() or self.isLose()
         if gameState.isWin() or gameState.isLose() or depth == self.depth:
             return self.evaluationFunction(gameState), None
         v, act = float('-inf'), None
