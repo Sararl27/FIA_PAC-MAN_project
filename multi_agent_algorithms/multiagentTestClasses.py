@@ -37,7 +37,7 @@ import sys
 import os
 import layout
 import pacman_multiagent
-import autograder
+import autograder_multiAgent
 # import grading
 
 VERBOSE = False
