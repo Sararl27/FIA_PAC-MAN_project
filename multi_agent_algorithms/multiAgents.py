@@ -184,8 +184,8 @@ class AlphaBetaAgent(MultiAgentSearchAgent):
             if v1 > v:
                 v, act = v1, a
                 alpha = max(alpha, v)
-            if v > beta:
-                return v, act
+                if v > beta:
+                    return v, act
         return v, act
 
     def __min(self, gameState, depth, agent, alpha, beta):
@@ -202,7 +202,7 @@ class AlphaBetaAgent(MultiAgentSearchAgent):
             if v1 < v:
                 v, act = v1, a
                 beta = min(beta, v)
-            if v < alpha:
-                return v, act
+                if v < alpha:
+                    return v, act
         return v, act
 
