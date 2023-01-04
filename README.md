@@ -17,7 +17,7 @@ Resources of [search algorithms](https://github.com/Sararl27/FIA_PAC-MAN_project
 | search.py  | Where all search algorithms reside. |
 | node.py | Auxiliary class created for this project to recreate a state with its attributes and functions. |
 | searchAgents.py |	Where search-based agents reside. |
-| pacman.py |	The main file that runs Pacman games. This file describes a Pacman GameState type, which you use in this project. |
+| pacman_search.py |	The main file that runs Pacman games. This file describes a Pacman GameState type, which you use in this project. |
 | game.py |	The logic behind how the Pacman world works. This file describes several supporting types like AgentState, Agent, Direction, and Grid. |
 | util.py |	Useful data structures for implementing search algorithms. | 
 | graphicsDisplay.py |	Graphics for Pacman. |
@@ -36,7 +36,7 @@ Resources of [multi agent algorithms](https://github.com/Sararl27/FIA_PAC-MAN_pr
 | File name  | Description |
 | :-------:  | ----------- |
 | multiAgents.py |	Where all multi-agent search agents reside. |
-| pacman.py |	The main file that runs Pacman games. This file describes a Pacman GameState type, which you use in this project. |
+| pacman_multiAgent.py |	The main file that runs Pacman games. This file describes a Pacman GameState type, which you use in this project. |
 | game.py |	The logic behind how the Pacman world works. This file describes several supporting types like AgentState, Agent, Direction, and Grid. |
 | util.py |	Useful data structures for implementing search algorithms. | 
 | graphicsDisplay.py |	Graphics for Pacman. |
@@ -54,8 +54,8 @@ Resources of [multi agent algorithms](https://github.com/Sararl27/FIA_PAC-MAN_pr
 ## How to run the code
 ### Search algorithms
 - To test all algorithms without graphics: ``` python autograder_search.py ```.
-- To execute with Depth First Search algorithm: ```python pacman.py -l <map> -p SearchAgent``` where _\<map\>_ can be _tinyMaze_, _mediumMaze_ or _bigMaze_.  For the _bigMaze_ map it is recommended to add the ```-z .5``` parameter at the end of the command.
-- To execute with Breadth First Search algorithm: ```python pacman.py -l <map> -p SearchAgent -a fn=bfs``` where _\<map\>_ can be _tinyMaze_, _mediumMaze_ or _bigMaze_. For the _bigMaze_ map it is recommended to add the ```-z .5``` parameter at the end of the command.
+- To execute with Depth First Search algorithm: ```python pacman_search.py -l <map> -p SearchAgent``` where _\<map\>_ can be _tinyMaze_, _mediumMaze_ or _bigMaze_.  For the _bigMaze_ map it is recommended to add the ```-z .5``` parameter at the end of the command.
+- To execute with Breadth First Search algorithm: ```python pacman_search.py -l <map> -p SearchAgent -a fn=bfs``` where _\<map\>_ can be _tinyMaze_, _mediumMaze_ or _bigMaze_. For the _bigMaze_ map it is recommended to add the ```-z .5``` parameter at the end of the command.
 - To execute with Unfirm Cost Search algorithm: 
   -  ```python pacman_search.py -l <map> -p SearchAgent -a fn=ucs``` where _\<map\>_ can be _tinyMaze_, _mediumMaze_ or _bigMaze_. For the _bigMaze_ map it is recommended to add the ```-z .5``` parameter at the end of the command.
   -   ```python pacman_search.py -l mediumDottedMaze -p StayEastSearchAgent``` (you should get very low path costs).  
