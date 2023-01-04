@@ -24,7 +24,7 @@ import projectParams
 import random
 random.seed(0)
 try:
-    from pacman_multiagent import GameState
+    from pacman_multiAgent import GameState
 except:
     pass
 

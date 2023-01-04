@@ -14,7 +14,7 @@
 
 import time
 try:
-    import pacman_multiagent
+    import pacman_multiAgent
 except:
     pass
 
@@ -65,7 +65,7 @@ class PacmanGraphics:
         if self.agentCounter == 0:
             self.turn += 1
             if DISPLAY_MOVES:
-                ghosts = [pacman_multiagent.nearestPoint(
+                ghosts = [pacman_multiAgent.nearestPoint(
                     state.getGhostPosition(i)) for i in range(1, numAgents)]
                 print("%4d) P: %-8s" % (self.turn, str(pacman_multiagent.nearestPoint(state.getPacmanPosition()))),
                       '| Score: %-5d' % state.score, '| Ghosts:', ghosts)

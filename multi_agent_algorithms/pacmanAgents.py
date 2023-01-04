@@ -12,7 +12,7 @@
 # Pieter Abbeel (pabbeel@cs.berkeley.edu).
 
 
-from pacman_multiagent import Directions
+from pacman_multiAgent import Directions
 from game import Agent
 import random
 import game

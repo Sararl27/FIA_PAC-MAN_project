@@ -1,4 +1,4 @@
-# pacman_multiagent.py
+# pacman_search.py
 # ---------
 # Licensing Information:  You are free to use or extend these projects for
 # educational purposes provided that (1) you do not distribute or publish
@@ -36,7 +36,7 @@ code to run a game.  This file is divided into three sections:
           linking in all the external parts (agent functions, graphics).
           Check this section out to see all the options available to you.
 
-To play your first game, type 'python pacman_multiagent.py' from the command line.
+To play your first game, type 'python pacman_search.py' from the command line.
 The keys are 'a', 's', 'd', and 'w' to move (or arrow keys).  Have fun!
 """
 from game import GameStateData
@@ -479,11 +479,11 @@ def readCommand( argv ):
     """
     from optparse import OptionParser
     usageStr = """
-    USAGE:      python pacman_multiagent.py <options>
-    EXAMPLES:   (1) python pacman_multiagent.py
+    USAGE:      python pacman_search.py <options>
+    EXAMPLES:   (1) python pacman_search.py
                     - starts an interactive game
-                (2) python pacman_multiagent.py --layout smallClassic --zoom 2
-                OR  python pacman_multiagent.py -l smallClassic -z 2
+                (2) python pacman_search.py --layout smallClassic --zoom 2
+                OR  python pacman_search.py -l smallClassic -z 2
                     - starts an interactive game on a smaller board, zoomed in
     """
     parser = OptionParser(usageStr)
@@ -668,14 +668,14 @@ def runGames( layout, pacman, ghosts, display, numGames, record, numTraining = 0
 
 if __name__ == '__main__':
     """
-    The main function called when pacman_multiagent.py is run
+    The main function called when pacman_search.py is run
     from the command line:
 
-    > python pacman_multiagent.py
+    > python pacman_search.py
 
     See the usage string for more details.
 
-    > python pacman_multiagent.py --help
+    > python pacman_search.py --help
     """
     args = readCommand( sys.argv[1:] ) # Get game components based on input
     runGames( **args )

@@ -14,11 +14,11 @@
 
 """
 This file contains all of the agents that can be selected to control Pacman.  To
-select an agent, use the '-p' option when running pacman_multiagent.py.  Arguments can be
+select an agent, use the '-p' option when running pacman_search.py.  Arguments can be
 passed to your agent using '-a'.  For example, to load a SearchAgent that uses
 depth first search (dfs), run the following command:
 
-> python pacman_multiagent.py -p SearchAgent -a fn=depthFirstSearch
+> python pacman_search.py -p SearchAgent -a fn=depthFirstSearch
 
 Commands to invoke other search strategies can be found in the project
 description.
@@ -45,7 +45,7 @@ class GoWestAgent(Agent):
     "An agent that goes West until it can't."
 
     def getAction(self, state):
-        "The agent receives a GameState (defined in pacman_multiagent.py)."
+        "The agent receives a GameState (defined in pacman_search.py)."
         if Directions.WEST in state.getLegalPacmanActions():
             return Directions.WEST
         else:
@@ -107,7 +107,7 @@ class SearchAgent(Agent):
         should compute the path to the goal and store it in a local variable.
         All of the work is done in this method!
 
-        state: a GameState object (pacman_multiagent.py)
+        state: a GameState object (pacman_search.py)
         """
         if self.searchFunction == None: raise Exception("No search function provided for SearchAgent")
         starttime = time.time()
@@ -123,7 +123,7 @@ class SearchAgent(Agent):
         registerInitialState).  Return Directions.STOP if there is no further
         action to take.
 
-        state: a GameState object (pacman_multiagent.py)
+        state: a GameState object (pacman_search.py)
         """
         if 'actionIndex' not in dir(self): self.actionIndex = 0
         i = self.actionIndex
@@ -148,7 +148,7 @@ class PositionSearchProblem(search.SearchProblem):
         """
         Stores the start and goal.
 
-        gameState: A GameState object (pacman_multiagent.py)
+        gameState: A GameState object (pacman_search.py)
         costFn: A function from a search state (tuple) to a non-negative number
         goal: A position in the gameState
         """

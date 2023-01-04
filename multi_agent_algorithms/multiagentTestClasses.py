@@ -28,7 +28,7 @@ from pprint import PrettyPrinter
 pp = PrettyPrinter()
 
 from game import Agent
-from pacman_multiagent import GameState
+from pacman_multiAgent import GameState
 from ghostAgents import RandomGhost, DirectionalGhost
 import random
 import math
@@ -36,7 +36,7 @@ import traceback
 import sys
 import os
 import layout
-import pacman_multiagent
+import pacman_multiAgent
 import autograder_multiAgent
 # import grading
 
