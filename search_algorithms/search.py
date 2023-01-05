@@ -116,8 +116,7 @@ def breadthFirstSearch(problem):
 
 
 def UCS_AStar(problem, queue):
-    node = Node(problem.getStartState())
-    queue.push(node)
+    queue.push(Node(problem.getStartState()))
     visited = []
 
     while not queue.isEmpty():
