@@ -128,15 +128,15 @@ def UCS_AStar(problem, queue):
             visited.append(node.state)
 
             for child in node.extend(problem):
-                if child.state in visited: # Avoid adding already visited nodes which would be ignored with the condition above (optimization)
-                    continue
+                if child.state in visited: # Avoid adding already visited nodes which would be ignored with
+                    continue               # the condition above (optimization)
                 queue.update(child)  # Check if exist or not exist in the queue,
-                                     # in case that it is in, check if has a lower heuristic value then replace it
+                                     # in case that it is in, check if it has a lower heuristic value then replace it
     return []
 
 
 def uniformCostSearch(problem: SearchProblem):
-    """Search the node of least total cost first."""
+    """Search the node of the least total cost first."""
     return UCS_AStar(problem, util.PriorityQueueWithFunction(lambda node: node.heuristic_value))
 
 
@@ -151,7 +151,7 @@ def nullHeuristic(state, problem=None):
 def aStarSearch(problem, heuristic=nullHeuristic):
     """Search the node that has the lowest combined cost and heuristic first."""
     return UCS_AStar(problem,
-                     util.PriorityQueueWithFunction(lambda node: node.heuristic_value + heuristic(node.state, problem)))
+             util.PriorityQueueWithFunction(lambda node: node.heuristic_value + heuristic(node.state, problem)))
 
 
 # Abbreviations
