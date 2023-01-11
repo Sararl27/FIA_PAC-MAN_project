@@ -147,7 +147,7 @@ def run(lay, layName, pac, ghosts, disp, nGames=1, name='games'):
     """
     starttime = time.time()
     print('*** Running %s on' % name, layName, '%d time(s).' % nGames)
-    games = pacman_multiagent.runGames(lay, pac, ghosts, disp,
+    games = pacman_multiAgent.runGames(lay, pac, ghosts, disp,
                                        nGames, False, catchExceptions=True, timeout=120)
     print('*** Finished running %s on' % name, layName,
           'after %d seconds.' % (time.time() - starttime))
@@ -500,7 +500,7 @@ class EvalAgentTest(testClasses.TestCase):
         startTime = time.time()
 
         agentType = getattr(moduleDict['multiAgents'], self.agentName)
-        agentOpts = pacman_multiagent.parseAgentArgs(
+        agentOpts = pacman_multiAgent.parseAgentArgs(
             self.agentArgs) if self.agentArgs != '' else {}
         agent = agentType(**agentOpts)
 
@@ -509,7 +509,7 @@ class EvalAgentTest(testClasses.TestCase):
         disp = self.question.getDisplay()
 
         random.seed(self.seed)
-        games = pacman_multiagent.runGames(lay, agent, self.ghosts, disp, self.numGames,
+        games = pacman_multiAgent.runGames(lay, agent, self.ghosts, disp, self.numGames,
                                            False, catchExceptions=True, timeout=self.maxTime)
         totalTime = time.time() - startTime
 
