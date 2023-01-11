@@ -191,7 +191,6 @@ class AlphaBetaAgent(MultiAgentSearchAgent):
         if gameState.isWin() or gameState.isLose() or depth == self.depth:
             return self.evaluationFunction(gameState), None
         v, act = float('inf'), None
-
         for a in gameState.getLegalActions(agent):
             if agent + 1 == gameState.getNumAgents():
                 v1, _ = self.__max(gameState.generateSuccessor(agent, a), depth + 1, alpha, beta)
